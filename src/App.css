@@ -78,6 +78,28 @@
   padding-top: 600px;
 }
 
+.banner__second1 {
+  padding-top: 60%;
+  background: url("./assets/img/abc.png") center center/cover no-repeat;
+}
+.banner__second2 {
+  padding-top: 60%;
+  background: url("./assets/img/fashionbannersc2.png") center center/cover
+    no-repeat;
+}
+
+.banner__second3 {
+  padding-top: 60%;
+  background: url("./assets/img/shoesBannersecond.png") center center/cover
+    no-repeat;
+}
+.banner__second1:hover,
+.banner__second2:hover,
+.banner__second3:hover {
+  cursor: pointer;
+  transform: scale(0.95, 0.95);
+}
+
 .description_banner1-home {
   width: 50%;
   padding: 15px 30px;

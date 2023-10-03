@@ -21,8 +21,8 @@ export const loginSlice = createSlice({
       state.isLogin = "success";
     },
     logOutAccount: (state) => {
-      state.isLogin = "";
       localStorage.removeItem("localAccount");
+      state.isLogin = "";
       state.account = null;
     },
   },
