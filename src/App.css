@@ -8,7 +8,10 @@
   --c-grey: #c0c6d4;
   --c-backgroud-pink: #e55473;
 }
-
+/* body {
+  background-color: rgb(54, 54, 54);
+  color: rgb(206, 202, 202);
+} */
 @font-face {
   font-family: robotoRegular;
   src: url("./assets/fonts-roboto/Roboto-Regular.ttf");
