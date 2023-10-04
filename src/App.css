@@ -428,6 +428,7 @@
   color: var(--c-backgroud-pink);
 }
 .user__header-top {
+  position: relative;
   display: flex;
   max-width: 15%;
   cursor: pointer;

@@ -65,7 +65,7 @@ function HomeProducts() {
       });
   }
   function getProducts() {
-    dispatch(getProductThunk());
+    dispatch(getProductThunk(""));
   }
   useEffect(() => {
     getProducts();

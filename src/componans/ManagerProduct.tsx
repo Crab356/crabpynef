@@ -64,7 +64,7 @@ function ManagerProduct() {
   // }
 
   function getProducts() {
-    dispatch(getProductThunk());
+    dispatch(getProductThunk(""));
   }
   useEffect(() => {
     getProducts();
