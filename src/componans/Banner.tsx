@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import imgFashion from "../assets/img/ban1.png";
 import imgshose from "../assets/img/pngegg.png";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import img from "../assets/img/lincungstock.jpg";
 function Banner() {
   return (
@@ -99,7 +99,7 @@ function Banner() {
   );
 }
 
-export default Banner;
+export default memo(Banner);
 
 const SecondBanner = styled.div`
   margin-top: 100px;

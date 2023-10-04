@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Banner from "../componans/Banner";
 import Header from "../componans/Header";
 import HeaderSecond from "../componans/HeaderSecond";
-import { CheckLoginPage } from "../CheckLogin";
 import HomeProducts from "../componans/productComponans/HomeProduct";
+import News from "../componans/productComponans/News";
+import FooterComponans from "../componans/productComponans/FooterComponans";
 
 function ProductHome() {
   const [page, setPage] = useState(1);
@@ -13,7 +14,9 @@ function ProductHome() {
       <Header />
       <HeaderSecond />
       {page == 1 && <Banner />}
-      <HomeProducts />
+      {page == 1 && <HomeProducts />}
+      <News />
+      <FooterComponans />
     </>
   );
 }

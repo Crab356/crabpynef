@@ -2,19 +2,67 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { getProductThunk } from "../../slice/getProductsSlice";
+import { api } from "../../axios-instance";
+import PaginationProduct from "../PaginationProduct";
+import { ProductsType } from "../modal/ModalProduct";
 
 function HomeProducts() {
+  const pageSize = 12;
   const dispatch = useDispatch();
   const { productsList } = useSelector((store) => store.getProducts);
-
   const [idHeart, setIdHeart] = useState([]);
-  console.log(idHeart);
+  const [productPageList, setProductPageList] = useState<Array<ProductsType>>(
+    []
+  );
+  const [pagination, setpagination] = useState({
+    total: 0,
+    sliceFrom: 0,
+    sliceTo: pageSize,
+    currentPage: 1,
+  });
 
-  function HeartClick(data: any) {
+  useEffect(() => {
+    setProductPageList(
+      productsList.slice(pagination.sliceFrom, pagination.sliceTo)
+    );
+    setpagination({ ...pagination, total: productsList.length });
+  }, [productsList, pagination.sliceTo, pagination.sliceFrom]);
+
+  async function HeartClick(data: any) {
     setIdHeart([...idHeart, data.id]);
+    await api
+      .get(`/products/${data.id}`)
+      .then((res) => {
+        api
+          .put(`/products/${res.data.id}`, {
+            ...res.data,
+            like: res.data.like + 1,
+          })
+          .then(() => {
+            getProducts();
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
-  function HeartCloseClick(data: any) {
+  async function HeartCloseClick(data: any) {
     setIdHeart(idHeart.filter((i) => i != data.id));
+    await api
+      .get(`/products/${data.id}`)
+      .then((res) => {
+        api
+          .put(`/products/${res.data.id}`, {
+            ...res.data,
+            like: res.data.like - 1,
+          })
+          .then(() => {
+            getProducts();
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
   function getProducts() {
     dispatch(getProductThunk());
@@ -27,8 +75,8 @@ function HomeProducts() {
       <HeadingProduct>NEW ARRIVAL ITEM</HeadingProduct>
       <DivLine></DivLine>
       <div className="container">
-        <div className="row g-3">
-          {productsList.map((item, index) => (
+        <div className="row g-4">
+          {productPageList.map((item, index) => (
             <div
               className="col-6 col-sm-6 col-xl-3 col-lg-3 col-md-4"
               key={item.id}
@@ -77,6 +125,13 @@ function HomeProducts() {
             </div>
           ))}
         </div>
+        <StylePagination>
+          <PaginationProduct
+            pagination={pagination}
+            setPagination={setpagination}
+            page={pageSize}
+          />
+        </StylePagination>
       </div>
     </>
   );
@@ -84,8 +139,13 @@ function HomeProducts() {
 
 export default HomeProducts;
 
+const StylePagination = styled.div`
+  margin: 50px 0;
+`;
+
 const ImgProduct = styled.img`
   width: 100%;
+  border-radius: 20px;
 `;
 
 const BoxImg = styled.div`
@@ -105,6 +165,7 @@ const ProductHead = styled.h5`
   text-align: center;
   font-size: 18px;
   min-height: 44px;
+  text-transform: uppercase;
 `;
 
 const SoldOut = styled.p`
@@ -138,6 +199,7 @@ const ProductBox = styled.div`
   background-color: white;
   border-radius: 20px;
   padding: 10px;
+  border-top: 1px solid #c3c3c3;
   border-bottom: 1px solid #c3c3c3;
   &:hover {
     transform: scale(0.95, 0.95);
