@@ -6,7 +6,7 @@ import { api } from "../../axios-instance";
 import PaginationProduct from "../PaginationProduct";
 import { ProductsType } from "../modal/ModalProduct";
 
-function HomeProducts() {
+function HomeProducts({ searchHome }: { searchHome?: string }) {
   const pageSize = 12;
   const dispatch = useDispatch();
   const { productsList } = useSelector((store) => store.getProducts);
@@ -14,6 +14,11 @@ function HomeProducts() {
   const [productPageList, setProductPageList] = useState<Array<ProductsType>>(
     []
   );
+  const searchProducts = productsList.filter((e) => {
+    if (e.name.toLowerCase().includes(searchHome?.toLowerCase())) {
+      return e;
+    }
+  });
   const [pagination, setpagination] = useState({
     total: 0,
     sliceFrom: 0,
@@ -72,65 +77,76 @@ function HomeProducts() {
   }, []);
   return (
     <>
-      <HeadingProduct>NEW ARRIVAL ITEM</HeadingProduct>
-      <DivLine></DivLine>
+      {searchHome == undefined && (
+        <>
+          <HeadingProduct>NEW ARRIVAL ITEM</HeadingProduct>
+          <DivLine></DivLine>
+        </>
+      )}
       <div className="container">
+        {searchHome && <h5>Search for: "{searchHome}"</h5>}
         <div className="row g-4">
-          {productPageList.map((item, index) => (
-            <div
-              className="col-6 col-sm-6 col-xl-3 col-lg-3 col-md-4"
-              key={item.id}
-            >
-              <ProductBox>
-                <BoxImg>
-                  <ImgProduct src={item.productimg} />
-                </BoxImg>
-                <SaleProduct>
-                  {item.sale != 0 && <PriceSaleP>-{item.sale}%</PriceSaleP>}
-                </SaleProduct>
-                <DescripProductBox>
-                  <ProductHead>{item.name}</ProductHead>
-                  <ProductLine></ProductLine>
-                  <BoxAcProduct>
-                    <ProductPrice>${item.price}</ProductPrice>
-                    <ProductPrice>
-                      {idHeart.find((i) => i == item.id) ? (
-                        <IconHeart
-                          className="fa-solid fa-heart"
-                          onClick={() =>
-                            HeartCloseClick({ id: item.id, like: item.like })
-                          }
-                        ></IconHeart>
-                      ) : (
-                        <IconHeart
-                          className="fa-regular fa-heart"
-                          onClick={() =>
-                            HeartClick({ id: item.id, like: item.like })
-                          }
-                        ></IconHeart>
-                      )}
+          {(searchHome ? searchProducts : productPageList).map(
+            (item, index) => (
+              <div
+                className="col-6 col-sm-6 col-xl-3 col-lg-3 col-md-4"
+                key={item.id}
+              >
+                <ProductBox>
+                  <div style={{ cursor: "pointer" }}>
+                    <BoxImg>
+                      <ImgProduct src={item.productimg} />
+                    </BoxImg>
+                    <SaleProduct>
+                      {item.sale != 0 && <PriceSaleP>-{item.sale}%</PriceSaleP>}
+                    </SaleProduct>
+                    <ProductHead>{item.name}</ProductHead>
+                  </div>
+                  <DescripProductBox>
+                    <ProductLine></ProductLine>
+                    <BoxAcProduct>
+                      <ProductPrice>${item.price}</ProductPrice>
+                      <ProductPrice>
+                        {idHeart.find((i) => i == item.id) ? (
+                          <IconHeart
+                            className="fa-solid fa-heart"
+                            onClick={() =>
+                              HeartCloseClick({ id: item.id, like: item.like })
+                            }
+                          ></IconHeart>
+                        ) : (
+                          <IconHeart
+                            className="fa-regular fa-heart"
+                            onClick={() =>
+                              HeartClick({ id: item.id, like: item.like })
+                            }
+                          ></IconHeart>
+                        )}
 
-                      {item.like}
-                    </ProductPrice>
-                  </BoxAcProduct>
-                  {item.quanlity == 0 ? (
-                    <SoldOut>Sold Out</SoldOut>
-                  ) : (
-                    <QuanlityProduct>
-                      Remaining: {item.quanlity}
-                    </QuanlityProduct>
-                  )}
-                </DescripProductBox>
-              </ProductBox>
-            </div>
-          ))}
+                        {item.like}
+                      </ProductPrice>
+                    </BoxAcProduct>
+                    {item.quanlity == 0 ? (
+                      <SoldOut>Sold Out</SoldOut>
+                    ) : (
+                      <QuanlityProduct>
+                        Remaining: {item.quanlity}
+                      </QuanlityProduct>
+                    )}
+                  </DescripProductBox>
+                </ProductBox>
+              </div>
+            )
+          )}
         </div>
         <StylePagination>
-          <PaginationProduct
-            pagination={pagination}
-            setPagination={setpagination}
-            page={pageSize}
-          />
+          {searchHome == undefined && (
+            <PaginationProduct
+              pagination={pagination}
+              setPagination={setpagination}
+              page={pageSize}
+            />
+          )}
         </StylePagination>
       </div>
     </>
@@ -203,7 +219,6 @@ const ProductBox = styled.div`
   border-bottom: 1px solid #c3c3c3;
   &:hover {
     transform: scale(0.95, 0.95);
-    cursor: pointer;
   }
 `;
 
@@ -226,6 +241,7 @@ const ProductPrice = styled.p`
 const IconHeart = styled.i`
   padding: 0 10px;
   color: red;
+  cursor: pointer;
 `;
 
 const HeadingProduct = styled.h3`

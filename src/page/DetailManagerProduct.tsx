@@ -28,6 +28,8 @@ function DetailManagerProduct() {
   const editContext = useContext(CheckNotifiContext);
   const { isCheckNotifi, setCheckNotifi, checkNotification } = editContext;
 
+  console.log(product);
+
   CheckLoginPage();
   checkLoginAdmin();
 

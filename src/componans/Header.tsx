@@ -3,10 +3,13 @@ import igm from "../assets/img/aloja.jpg";
 import { memo, useState } from "react";
 import styled from "styled-components";
 
-function Header() {
+function Header({ setSearchHome }: { setSearchHome: (val: string) => void }) {
   const [isMyAcc, setMyAcc] = useState(false);
   function MyAccHandle() {
     setMyAcc(!isMyAcc);
+  }
+  function searchHandle(data: string) {
+    setSearchHome(data);
   }
   return (
     <>
@@ -25,7 +28,11 @@ function Header() {
                 </div>
               </div>
               <div className="search__header-top">
-                <input type="text" placeholder="Search Your Itemes" />
+                <input
+                  type="text"
+                  placeholder="Search Itemes"
+                  onChange={(e) => searchHandle(e.target.value)}
+                />
                 <i className="fa-solid fa-magnifying-glass fa-lg"></i>
               </div>
               <div className="cart__header-top">
@@ -41,7 +48,12 @@ function Header() {
                 </div>
               </div>
               <div className="user__header-top" onClick={MyAccHandle}>
-                <Avatar color="neutral" alt="" sx={{ width: 30, height: 30 }} />
+                <Avatar
+                  color="neutral"
+                  alt="Your Name"
+                  src="../"
+                  sx={{ width: 30, height: 30 }}
+                />
                 <p className="user__text">Your Name</p>
                 {isMyAcc && (
                   <>
