@@ -26,6 +26,9 @@ export type ProductsType = {
   productimg?: string;
   description: string;
   id?: number;
+  buyquanlity?: number;
+  discount?: string;
+  size?: string;
 };
 
 function ModalProduct({

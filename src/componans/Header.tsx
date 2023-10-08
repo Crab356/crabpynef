@@ -2,8 +2,15 @@ import Avatar from "@mui/material/Avatar";
 import igm from "../assets/img/aloja.jpg";
 import { memo, useState } from "react";
 import styled from "styled-components";
+import { ProductsType } from "./modal/ModalProduct";
 
-function Header({ setSearchHome }: { setSearchHome: (val: string) => void }) {
+function Header({
+  setSearchHome,
+  cartItem,
+}: {
+  cartItem: Array<ProductsType>;
+  setSearchHome: (val: string) => void;
+}) {
   const [isMyAcc, setMyAcc] = useState(false);
   function MyAccHandle() {
     setMyAcc(!isMyAcc);
@@ -38,9 +45,11 @@ function Header({ setSearchHome }: { setSearchHome: (val: string) => void }) {
               <div className="cart__header-top">
                 <div className="icon-cart">
                   <i className="fa-solid fa-bag-shopping fa-xl"></i>
-                  <div className="quanlity__cart">
-                    <p>0</p>
-                  </div>
+                  {cartItem.length > 0 && (
+                    <div className="quanlity__cart">
+                      <p>{cartItem.length}</p>
+                    </div>
+                  )}
                 </div>
                 <div className="text-cart">
                   <p>YOUR CART</p>

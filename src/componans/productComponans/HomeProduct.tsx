@@ -5,8 +5,15 @@ import { getProductThunk } from "../../slice/getProductsSlice";
 import { api } from "../../axios-instance";
 import PaginationProduct from "../PaginationProduct";
 import { ProductsType } from "../modal/ModalProduct";
+import { getIdProductThunk } from "../../slice/getIdProductSlice";
 
-function HomeProducts({ searchHome }: { searchHome?: string }) {
+function HomeProducts({
+  searchHome,
+  setPageProduct,
+}: {
+  searchHome?: string;
+  setPageProduct: (val: number) => void;
+}) {
   const pageSize = 12;
   const dispatch = useDispatch();
   const { productsList } = useSelector((store) => store.getProducts);
@@ -75,6 +82,11 @@ function HomeProducts({ searchHome }: { searchHome?: string }) {
   useEffect(() => {
     getProducts();
   }, []);
+
+  function Ondetail(data) {
+    dispatch(getIdProductThunk(data));
+    setPageProduct(4);
+  }
   return (
     <>
       {searchHome == undefined && (
@@ -93,7 +105,10 @@ function HomeProducts({ searchHome }: { searchHome?: string }) {
                 key={item.id}
               >
                 <ProductBox>
-                  <div style={{ cursor: "pointer" }}>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => Ondetail(item.id)}
+                  >
                     <BoxImg>
                       <ImgProduct src={item.productimg} />
                     </BoxImg>
