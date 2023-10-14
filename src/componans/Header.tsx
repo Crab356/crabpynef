@@ -1,22 +1,36 @@
 import Avatar from "@mui/material/Avatar";
-import igm from "../assets/img/aloja.jpg";
 import { memo, useState } from "react";
 import styled from "styled-components";
 import { ProductsType } from "./modal/ModalProduct";
+import { useDispatch, useSelector } from "react-redux";
+import { logOutAccount } from "../slice/loginSlice";
+import { useNavigate } from "react-router-dom";
 
 function Header({
   setSearchHome,
   cartItem,
+  totalDolar,
+  setPageProduct,
 }: {
+  setPageProduct: (val: number) => void;
+  totalDolar: string;
   cartItem: Array<ProductsType>;
   setSearchHome: (val: string) => void;
 }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { account } = useSelector((state) => state.logSlide);
   const [isMyAcc, setMyAcc] = useState(false);
   function MyAccHandle() {
     setMyAcc(!isMyAcc);
   }
   function searchHandle(data: string) {
     setSearchHome(data);
+  }
+
+  function LogoutUser() {
+    dispatch(logOutAccount());
+    navigate("/");
   }
   return (
     <>
@@ -42,7 +56,10 @@ function Header({
                 />
                 <i className="fa-solid fa-magnifying-glass fa-lg"></i>
               </div>
-              <div className="cart__header-top">
+              <div
+                className="cart__header-top"
+                onClick={() => setPageProduct(5)}
+              >
                 <div className="icon-cart">
                   <i className="fa-solid fa-bag-shopping fa-xl"></i>
                   {cartItem.length > 0 && (
@@ -52,26 +69,28 @@ function Header({
                   )}
                 </div>
                 <div className="text-cart">
-                  <p>YOUR CART</p>
-                  <p className="cart__price-icon">$ 5200.86</p>
+                  <p>MY CART</p>
+                  <p className="cart__price-icon">${totalDolar}</p>
                 </div>
               </div>
               <div className="user__header-top" onClick={MyAccHandle}>
                 <Avatar
                   color="neutral"
-                  alt="Your Name"
-                  src="../"
+                  alt={account?.username}
+                  src={account?.avatar}
                   sx={{ width: 30, height: 30 }}
                 />
-                <p className="user__text">Your Name</p>
+                <p className="user__text">{account?.username}</p>
                 {isMyAcc && (
                   <>
                     <Overlay></Overlay>
                     <SpanStyle></SpanStyle>
                     <NavbarLogin>
                       <UlNavbar>
-                        <LiNavbar>My Account</LiNavbar>
-                        <LiNavbar>Logout</LiNavbar>
+                        <LiNavbar onClick={() => setPageProduct(6)}>
+                          My Account
+                        </LiNavbar>
+                        <LiNavbar onClick={LogoutUser}>Logout</LiNavbar>
                       </UlNavbar>
                     </NavbarLogin>
                   </>

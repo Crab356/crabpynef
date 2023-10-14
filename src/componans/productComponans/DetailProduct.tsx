@@ -3,6 +3,7 @@ import styled from "styled-components";
 import LoadingLogic from "../Loading";
 import { useRef, useState } from "react";
 import { ProductsType } from "../modal/ModalProduct";
+import { toast } from "react-toastify";
 
 function DetailProduct({
   setCartItem,
@@ -31,6 +32,7 @@ function DetailProduct({
     }
   }
   function addToCart() {
+    toast.info("Add to cart successfully");
     if (BuyQuanlity == 0) {
       setQuanAdd(true);
     } else {
@@ -239,6 +241,7 @@ const PriceDisplay = styled.h5`
 `;
 const NameProduct = styled.h4`
   margin-bottom: 15px;
+  text-transform: uppercase;
 `;
 const DetailCol = styled.div`
   padding: 10px 20px;

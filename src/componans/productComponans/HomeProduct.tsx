@@ -6,6 +6,7 @@ import { api } from "../../axios-instance";
 import PaginationProduct from "../PaginationProduct";
 import { ProductsType } from "../modal/ModalProduct";
 import { getIdProductThunk } from "../../slice/getIdProductSlice";
+import LoadingLogic from "../Loading";
 
 function HomeProducts({
   searchHome,
@@ -16,7 +17,7 @@ function HomeProducts({
 }) {
   const pageSize = 12;
   const dispatch = useDispatch();
-  const { productsList } = useSelector((store) => store.getProducts);
+  const { productsList, isLoading } = useSelector((store) => store.getProducts);
   const [idHeart, setIdHeart] = useState([]);
   const [productPageList, setProductPageList] = useState<Array<ProductsType>>(
     []
@@ -89,6 +90,7 @@ function HomeProducts({
   }
   return (
     <>
+      {/* {isLoading && <LoadingLogic />} */}
       {searchHome == undefined && (
         <>
           <HeadingProduct>NEW ARRIVAL ITEM</HeadingProduct>

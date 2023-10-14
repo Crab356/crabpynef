@@ -10,6 +10,8 @@ import RegisterPage from "./page/Register";
 import AdminPage from "./page/AdminPage";
 import DetailManagerProduct from "./page/DetailManagerProduct";
 import loginSlice, { setGetLocalStore } from "./slice/loginSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -74,6 +76,7 @@ function App() {
           <RouterProvider router={router} />
         </CheckNotifiContext.Provider>
       </Provider>
+      <ToastContainer theme="light" autoClose={1000} />
     </>
   );
 }

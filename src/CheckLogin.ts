@@ -29,8 +29,18 @@ export function checkLoginAdmin() {
   const { isLogin, account } = useSelector((state) => state.logSlide);
   const navigate = useNavigate();
   useEffect(() => {
-    if (account?.role == "user") {
+    if (isLogin == "success" && account?.role == "user") {
       navigate("/home_product");
+    }
+  }, []);
+}
+
+export function checkLoginUser() {
+  const { isLogin, account } = useSelector((state) => state.logSlide);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isLogin == "success" && account?.role == "admin") {
+      navigate("/adminPage");
     }
   }, []);
 }

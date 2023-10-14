@@ -27,6 +27,7 @@ export type TypeUser = {
   password: string;
   role: string;
   id?: number;
+  avatar: string;
 };
 function RegisterPage() {
   const [isPassHiden, setPassHiden] = useState(false);
@@ -48,7 +49,7 @@ function RegisterPage() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmitUser = (data: any) => {
+  const onSubmitUser = (data: TypeUser) => {
     addUser({
       fullname: data.fullname,
       username: data.username,
@@ -56,6 +57,7 @@ function RegisterPage() {
       phonenumber: data.phonenumber,
       password: data.password,
       role: data.role,
+      avatar: "imgAvata",
     });
     resetField("fullname");
     resetField("email");

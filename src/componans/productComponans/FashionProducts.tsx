@@ -6,8 +6,15 @@ import { ProductsType } from "../modal/ModalProduct";
 import { api } from "../../axios-instance";
 import PaginationProduct from "../PaginationProduct";
 import LoadingLogic from "../Loading";
+import { getIdProductThunk } from "../../slice/getIdProductSlice";
 
-function FashionProducts({ getRedux }: { getRedux: string }) {
+function FashionProducts({
+  getRedux,
+  setPageProduct,
+}: {
+  setPageProduct: (val: number) => void;
+  getRedux: string;
+}) {
   const [priceSearch, setPriceSearch] = useState("");
   const [nameSearch, setNameSearch] = useState("");
   const pageSize = 6;
@@ -25,6 +32,8 @@ function FashionProducts({ getRedux }: { getRedux: string }) {
       return i;
     }
   });
+  const abc = JSON.parse(localStorage.getItem("localAccount"));
+  console.log(abc);
 
   const [pagination, setpagination] = useState({
     total: 0,
@@ -82,6 +91,10 @@ function FashionProducts({ getRedux }: { getRedux: string }) {
   useEffect(() => {
     getProducts();
   }, []);
+  function DetailClick(data: number) {
+    dispatch(getIdProductThunk(data));
+    setPageProduct(4);
+  }
   return (
     <>
       {isLoading && <LoadingLogic />}
@@ -149,7 +162,10 @@ function FashionProducts({ getRedux }: { getRedux: string }) {
                     key={item.id}
                   >
                     <ProductBox>
-                      <div style={{ cursor: "pointer" }}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => DetailClick(item.id)}
+                      >
                         <BoxImg>
                           <ImgProduct src={item.productimg} />
                         </BoxImg>
